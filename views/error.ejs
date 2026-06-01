@@ -1,0 +1,8 @@
+<%- include('partials/header', { title: 'Error' }) %>
+<div class="empty-state" style="min-height: 60vh; justify-content: center;">
+  <div class="empty-icon" style="font-size: 5rem;">⚠️</div>
+  <h2>Something Went Wrong</h2>
+  <p><%= error.message || 'An unexpected error occurred.' %></p>
+  <a href="/books" class="btn btn-primary">← Back to Books</a>
+</div>
+<%- include('partials/footer') %>

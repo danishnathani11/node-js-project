@@ -1,0 +1,79 @@
+<%- include('../partials/header', { title: book.title }) %>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <nav class="breadcrumb">
+      <a href="/books">Books</a> <span>›</span> <span><%= book.title %></span>
+    </nav>
+  </div>
+  <div class="header-actions">
+    <a href="/books/<%= book._id %>/edit" class="btn btn-secondary">✏️ Edit</a>
+    <form action="/books/<%= book._id %>?_method=DELETE" method="POST" style="display:inline;">
+      <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this book permanently?')">🗑️ Delete</button>
+    </form>
+  </div>
+</div>
+
+<% if (typeof success !== 'undefined' && success) { %>
+  <div class="alert alert-success">✅ <%= success %></div>
+<% } %>
+
+<div class="book-detail">
+  <div class="book-detail-image">
+    <% if (book.image) { %>
+      <img src="/uploads/<%= book.image %>" alt="<%= book.title %>" class="detail-cover" />
+    <% } else { %>
+      <div class="detail-cover-placeholder">
+        <span>📗</span>
+        <p>No Cover Image</p>
+      </div>
+    <% } %>
+    <span class="category-badge-lg"><%= book.category %></span>
+  </div>
+
+  <div class="book-detail-info">
+    <h1 class="detail-title"><%= book.title %></h1>
+    <p class="detail-author">by <strong><%= book.author %></strong></p>
+
+    <div class="detail-stats">
+      <div class="detail-stat">
+        <span class="detail-stat-label">Price</span>
+        <span class="detail-stat-value price-big">₹<%= book.price.toLocaleString('en-IN') %></span>
+      </div>
+      <div class="detail-stat">
+        <span class="detail-stat-label">Quantity</span>
+        <span class="detail-stat-value"><%= book.quantity %></span>
+      </div>
+      <div class="detail-stat">
+        <span class="detail-stat-label">Stock Status</span>
+        <span class="detail-stat-value stock-badge
+          <%= book.quantity === 0 ? 'out-of-stock' : book.quantity < 5 ? 'low-stock' : 'in-stock' %>">
+          <%= book.quantity === 0 ? 'Out of Stock' : book.quantity < 5 ? 'Low Stock' : 'In Stock' %>
+        </span>
+      </div>
+      <div class="detail-stat">
+        <span class="detail-stat-label">Inventory Value</span>
+        <span class="detail-stat-value">₹<%= (book.price * book.quantity).toLocaleString('en-IN') %></span>
+      </div>
+    </div>
+
+    <% if (book.description) { %>
+      <div class="detail-description">
+        <h3>Description</h3>
+        <p><%= book.description %></p>
+      </div>
+    <% } %>
+
+    <div class="detail-meta">
+      <p>Added: <strong><%= book.createdAt.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) %></strong></p>
+      <p>Updated: <strong><%= book.updatedAt.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) %></strong></p>
+    </div>
+
+    <div class="detail-actions">
+      <a href="/books" class="btn btn-ghost">← All Books</a>
+      <a href="/books/<%= book._id %>/edit" class="btn btn-primary">✏️ Edit Book</a>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
